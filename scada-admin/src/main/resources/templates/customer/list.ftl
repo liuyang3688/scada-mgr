@@ -5,8 +5,52 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <ol class="breadcrumb">
                 <li><a href="/">首页</a></li>
-                <li class="active">用户管理</li>
+                <li>客户管理</li>
+                <li>客户信息</li>
             </ol>
+            <div class="ibox float-e-margins border-bottom">
+                <div class="ibox-title">
+                    <h5><i class="fa fa-search"></i> 请输入查询条件</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-down"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <form method="get" action="" class="form-horizontal">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">客户名称：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="customerName" class="form-control" placeholder="请输入客户名称">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">手机号：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="customerPhone" class="form-control" placeholder="请输入客户手机号">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <span class="pull-right">
+                                      <div class="btn-group">
+                                          <button id="btn_query" type="button" class="btn btn-primary" title="查询"><i class="fa fa-search"></i> 查询</button>
+                                          <button id="btn_reset" type="button" class="btn btn-default" title="重置"><i class="fa fa-send"></i> 重置</button>
+                                      </div>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <div class="ibox ">
                 <div class="ibox-content">
                     <div class="btn-group hidden-xs" id="toolbar">
@@ -188,54 +232,14 @@
         //2.初始化Button的点击事件
         $.buttonUtil.init(options);
 
-        /* 分配用户角色 */
-        $('#tablelist').on('click', '.btn-allot', function () {
-            console.log("分配权限");
-            var $this = $(this);
-            var userId = $this.attr("data-id");
-            $.ajax({
-                async: false,
-                type: "POST",
-                data: {uid: userId},
-                url: '/roles/rolesWithSelected',
-                dataType: 'json',
-                success: function (json) {
-                    var data = json.data;
-                    console.log(data);
-                    var setting = {
-                        check: {
-                            enable: true,
-                            chkboxType: {"Y": "ps", "N": "ps"},
-                            chkStyle: "radio"
-                        },
-                        data: {
-                            simpleData: {
-                                enable: true
-                            }
-                        },
-                        callback: {
-                            onCheck: function (event, treeId, treeNode) {
-                                console.log(treeNode.tId + ", " + treeNode.name + "," + treeNode.checked);
-                                var treeObj = $.fn.zTree.getZTreeObj(treeId);
-                                var nodes = treeObj.getCheckedNodes(true);
-                                var ids = [];
-                                for (var i = 0; i < nodes.length; i++) {
-                                    //获取选中节点的值
-                                    ids.push(nodes[i].id);
-                                }
-                                console.log(ids);
-                                console.log(userId);
-                                $.post(options.saveRolesUrl, {"userId": userId, "roleIds": ids.join(",")}, function (obj) {
-                                }, 'json');
-                            }
-                        }
-                    };
-                    var tree = $.fn.zTree.init($("#treeDemo"), setting, data);
-                    tree.expandAll(true);//全部展开
+        /* 查询按钮 */
+        $('#btn_query').on('click', function () {
 
-                    $('#selectRole').modal('show');
-                }
-            });
         });
+        /* 重置按钮 */
+        $('#btn_reset').on('click', function () {
+            $('')
+        })
+
     });
 </script>

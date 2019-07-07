@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>SCADA管理系统</title>
-    <link href="/assets/images/favicon.jpg" rel="shortcut icon" type="image/x-icon">
+    <link href="images/favicon.jpg" rel="shortcut icon" type="image/x-icon">
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
     <link href="css/animate.css" rel="stylesheet">
@@ -15,6 +15,7 @@
     <#--<link href="css/plugins/jQueryUI/hot-sneaks/jquery-ui-1.8.16.custom.css" rel="stylesheet">-->
     <#--<link href="css/plugins/jqGrid/ui.jqgrid.css" rel="stylesheet">-->
     <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/jquery-form.js"></script>
     <#--iCheck插件-->
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
     <script src="js/plugins/iCheck/icheck.js"></script>
@@ -31,6 +32,8 @@
     <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
     <script src="js/plugins/toastr/toastr.min.js"></script>
     <script src="js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css"></script>
+    <#--ztree插件-->
+    <link href="js/plugins/ztree/zTreeStyle/zTreeStyle.css" rel="stylesheet">
 </head>
 <body>
 <div id="wrapper">
@@ -41,7 +44,7 @@
                 <#--头像-->
                 <li class="nav-header">
                     <div class="dropdown profile-element">
-                        <span><img alt="头像" class="img-circle" src="img/profile_small.jpg"></span>
+                        <span><img alt="头像" class="img-circle" src="/images/profile_small.jpg"></span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">刘洋</strong>
                          </span> <span class="text-muted text-xs block">普通用户 <b class="caret"></b></span> </span> </a>
@@ -66,7 +69,7 @@
                         <#list menus as item>
                             <#if item.nodes?? && item.nodes?size gt 0>
                             <li>
-                                <a><i class="${item.icon?if_exists}"></i> ${item.name?if_exists}<span class="fa arrow"></span></a>
+                                <a><i class="${item.icon?if_exists}"></i> <span class="nav-label">${item.name?if_exists}</span><span class="fa arrow"></span></a>
                                 <ul class="nav nav-second-level">
                                     <#list item.nodes as node>
                                         <@shiro.hasPermission name="${node.permission?if_exists}">
@@ -76,7 +79,7 @@
                                 </ul>
                             </li>
                             <#else>
-                            <li><a href="${item.url?if_exists}" ${(item.external?exists && item.external)?string('target="_blank"','')}><i class="${item.icon?if_exists}"></i>${item.name?if_exists}</a></li>
+                            <li><a href="${item.url?if_exists}" ${(item.external?exists && item.external)?string('target="_blank"','')}><i class="${item.icon?if_exists}"></i><span class="nav-label">${item.name?if_exists}</span></a></li>
                             </#if>
                         </#list>
                     </#if>
@@ -90,114 +93,13 @@
             <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
             <#--搜索组件-->
                 <div class="navbar-header">
-                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
-                    <form role="search" class="navbar-form-custom" action="/search">
-                        <div class="form-group">
-                            <input type="text" placeholder="搜索关键词..." class="form-control" name="top-search" id="top-search">
-                        </div>
-                    </form>
+                    <a  style="opacity: 0.2" class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                    <span><img src="/images/logo.png"/></span>
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
                     <li>
                         <span class="m-r-sm text-muted welcome-message">欢迎使用SCADA管理系统.</span>
                     </li>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                            <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-messages">
-                            <li>
-                                <div class="dropdown-messages-box">
-                                    <a href="profile.html" class="pull-left">
-                                        <img alt="image" class="img-circle" src="img/a7.jpg">
-                                    </a>
-                                    <div>
-                                        <small class="pull-right">严重</small>
-                                        <strong>温度传感器越上限xxx, 请予以关注。</strong>. <br>
-                                        <small class="text-muted">2019-06-21 18：54：10</small>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <div class="dropdown-messages-box">
-                                    <a href="profile.html" class="pull-left">
-                                        <img alt="image" class="img-circle" src="img/a4.jpg">
-                                    </a>
-                                    <div>
-                                        <small class="pull-right">中度</small>
-                                        <strong>温度传感器越上限xxx, 请予以关注。</strong>. <br>
-                                        <small class="text-muted">2019-06-21 18：54：10</small>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <div class="dropdown-messages-box">
-                                    <a href="profile.html" class="pull-left">
-                                        <img alt="image" class="img-circle" src="img/profile.jpg">
-                                    </a>
-                                    <div>
-                                        <small class="pull-right">轻微</small>
-                                        <strong>温度传感器越上限xxx, 请予以关注。</strong>. <br>
-                                        <small class="text-muted">2019-06-21 18：54：10</small>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <div class="text-center link-block">
-                                    <a href="mailbox.html">
-                                        <i class="fa fa-envelope"></i> <strong>查看所有通知信息</strong>
-                                    </a>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                            <i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-alerts">
-                            <li>
-                                <a href="mailbox.html">
-                                    <div>
-                                        <i class="fa fa-envelope fa-fw"></i> 告警信息1
-                                        <span class="pull-right text-muted small">4分钟前</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <a href="profile.html">
-                                    <div>
-                                        <i class="fa fa-twitter fa-fw"></i> 告警信息2
-                                        <span class="pull-right text-muted small">30分钟前</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <a href="grid_options.html">
-                                    <div>
-                                        <i class="fa fa-upload fa-fw"></i> 告警信息3
-                                        <span class="pull-right text-muted small">5小时15分钟前</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <div class="text-center link-block">
-                                    <a href="notifications.html">
-                                        <strong>查看所有告警</strong>
-                                        <i class="fa fa-angle-right"></i>
-                                    </a>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-
-
                     <li>
                         <a href="/passport/logout">
                             <i class="fa fa-sign-out"></i> 注销

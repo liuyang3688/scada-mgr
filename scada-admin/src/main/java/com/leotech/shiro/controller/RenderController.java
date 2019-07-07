@@ -58,4 +58,10 @@ public class RenderController {
     public ModelAndView formGen() {
         return ResultUtil.view("tool/formGen");
     }
+
+    @RequiresPermissions("customers")
+    @GetMapping("/customers")
+    public ModelAndView customers() {
+        return ResultUtil.view("customer/list");
+    }
 }

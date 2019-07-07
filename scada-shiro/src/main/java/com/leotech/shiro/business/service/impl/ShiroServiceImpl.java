@@ -86,7 +86,6 @@ public class ShiroServiceImpl implements ShiroService {
         filterChainDefinitionMap.put("/passport/signin", "anon");
         filterChainDefinitionMap.put("/favicon.ico", "anon");
         filterChainDefinitionMap.put("/error", "anon");
-        filterChainDefinitionMap.put("/assets/**", "anon");
         // 加载数据库中配置的资源权限列表
         List<Resources> resourcesList = resourcesService.listUrlAndPermission();
         for (Resources resources : resourcesList) {
