@@ -27,7 +27,7 @@
         <pagehelper.version>1.2.3</pagehelper.version>
         <druid.version>1.1.10</druid.version>
         <fastjson.version>1.2.44</fastjson.version>
-        <shiro.spring.version>1.4.0</shiro.spring.version>
+        <shiro.spring.version>1.7.0</shiro.spring.version>
         <shiro.redis.version>2.4.2.1-RELEASE</shiro.redis.version>
         <shiro.freemarker.tags.version>0.1</shiro.freemarker.tags.version>
     </properties>
